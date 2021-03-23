@@ -5,6 +5,9 @@ import javafx.scene.paint.Color;
 public class Constants {
      // TODO: fill this class in with any more constants you might need!
 
+    public static final int ROW_SQUARES = 30;
+    public static final int COLUMN_SQUARES = 20;
+
     // width of each square
     public static final int SQUARE_WIDTH = 30;
 

@@ -2,6 +2,7 @@ package tetris;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.scene.Scene;
 
 /**
  * It's time for Tetris! This is the  main class to get things started.
@@ -17,6 +18,10 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
+        PaneOrganizer organizer = new PaneOrganizer();
+        stage.setScene(new Scene(organizer.getRoot(), 400, 600));
+        stage.setTitle("Stage");
+        stage.show();
         // Create top-level object, set up the scene, and show the stage here.
     }
 
