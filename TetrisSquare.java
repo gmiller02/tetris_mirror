@@ -3,18 +3,35 @@ package tetris;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class BoardSquare {
+public class TetrisSquare {
     private Color _borderColor;
     private Color _boardColor;
     private Rectangle _square;
 
-    public BoardSquare(Color blue) {
+    public TetrisSquare(Color black) {
         _square = new Rectangle();
         _square.setWidth(Constants.SQUARE_WIDTH);
         _square.setHeight(Constants.SQUARE_WIDTH);
-        _square.setFill(_boardColor);
-        _borderColor = blue;
+        _borderColor = black;
+        _square.setFill(black);
 
+
+    }
+
+    public void setXLoc(double x) {
+        _square.setX(x);
+    }
+
+    public double getXLoc(double x) {
+        return _square.getX();
+    }
+
+    public void setYLoc(double y) {
+        _square.setY(y);
+    }
+
+    public double getYLoc(double y) {
+        return _square.getY();
     }
 
     public void setLocation(int x, int y) {

@@ -5,29 +5,69 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 public class Tetris {
-    private BoardSquare[][] _tetrisArray;
+    private TetrisSquare[][] _tetrisArray;
+    private Pane _boardPane;
+    private Piece _piece;
 
 
-    public Tetris() {
-        _tetrisArray = new BoardSquare[Constants.ROW_SQUARES][Constants.COLUMN_SQUARES];
+    public Tetris(Pane boardPane) {
+        _tetrisArray = new TetrisSquare[Constants.ROW_SQUARES][Constants.COLUMN_SQUARES];
+        _boardPane = boardPane;
+        _piece = new Piece(Constants.I_PIECE_COORDS);
 
         for (int row=0; row< Constants.ROW_SQUARES; row++) {
             for (int col=0; col < Constants.COLUMN_SQUARES; col++) {
-                BoardSquare square = null;
-                if ((row + col) == 0) {
-                    square = new BoardSquare(Color.BLUE);
-                }
-                else {
-                    square = new BoardSquare(Color.BLACK);
-                }
+                TetrisSquare square = null;
+
+                square = new TetrisSquare(Color.BLACK);
+                square.getRect().setFill(Color.BLACK);
+
                 square.setLocation(col*Constants.SQUARE_WIDTH, row*Constants.SQUARE_WIDTH);
                 _tetrisArray[row][col] = square;
             }
         }
+        this.makeBorder();
+        this.setUpBoardPane();
+        for (int i = 0; i < 4; i++) {
+            _boardPane.getChildren().add(_piece.getComponents()[i].getRect());
+        }
+
+
 
     }
 
-    public BoardSquare[][] getSquares() {
+    public void makeBorder() {
+        for (int row=0; row< Constants.ROW_SQUARES; row++) {
+            for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
+                TetrisSquare square = _tetrisArray[row][col];
+                if (row == 0 || col == 0) {
+                    square.getRect().setFill(Color.BLUE);
+                }
+
+                if (row == 29) {
+                    square.getRect().setFill(Color.BLUE);
+                }
+
+                if (col == 19) {
+                    square.getRect().setFill(Color.BLUE);
+                }
+
+            }
+        }
+    }
+
+    public TetrisSquare[][] getSquares() {
         return _tetrisArray;
+    }
+
+    private void setUpBoardPane() {
+
+        for (int row = 0; row < Constants.ROW_SQUARES; row++) {
+            for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
+                System.out.println(_boardPane);
+                System.out.println(_tetrisArray);
+                _boardPane.getChildren().add(_tetrisArray[row][col].getRect());
+            }
+        }
     }
 }
