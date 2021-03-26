@@ -13,7 +13,7 @@ public class Tetris {
     public Tetris(Pane boardPane) {
         _tetrisArray = new TetrisSquare[Constants.ROW_SQUARES][Constants.COLUMN_SQUARES];
         _boardPane = boardPane;
-        _piece = new Piece(Constants.I_PIECE_COORDS);
+        _piece = new Piece(Constants.O_PIECE_COORDS);
 
         for (int row=0; row< Constants.ROW_SQUARES; row++) {
             for (int col=0; col < Constants.COLUMN_SQUARES; col++) {

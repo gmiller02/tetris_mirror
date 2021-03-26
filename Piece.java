@@ -1,7 +1,12 @@
 package tetris;
 
+import javafx.application.Platform;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import javafx.event.EventHandler;
+
 
 public class Piece {
     private TetrisSquare[] _squares;
@@ -13,6 +18,7 @@ public class Piece {
         _squares = new TetrisSquare[4];
         _coords = initialCoords;
 
+
         this.generatePiece();
 
     }
@@ -20,22 +26,22 @@ public class Piece {
     public void generatePiece() {
         for (int i = 0; i < 4; i++) {
             _squares[i] = new TetrisSquare(this.ColorGenerator());
+
         }
+
         this.arrangePieces();
     }
 
     public void arrangePieces() {
         for (int i = 0; i < 4; i++) {
-            _squares[i].setXLoc(_coords[i][1] + 100);
-            _squares[i].setYLoc(_coords[i][0] + 100);
+            _squares[i].setXLoc(_coords[i][0] + 100);
+            _squares[i].setYLoc(_coords[i][1] + 100);
         }
     }
 
     public TetrisSquare[] getComponents() {
         return _squares;
     }
-
-
 
 
     public void setXLoc(double x, int i) {
@@ -58,5 +64,33 @@ public class Piece {
     public Color ColorGenerator(){
         return Color.color(Math.random(), Math.random(), Math.random());
     }
+
+//    private class KeyHandler implements EventHandler<KeyEvent> {
+//        @Override
+//        public void handle(KeyEvent e) {
+//            KeyCode keyPressed = e.getCode();
+//
+//            switch (keyPressed) {
+//                case LEFT:
+//                    Piece.this.setXLoc(Piece.this.getXLoc() - 10);
+//                    break;
+//                case RIGHT:
+//                    Piece.this.setXLoc(Piece.this.getXLoc() + 10);
+//                    break;
+//                case DOWN:
+//                    Piece.this.setYLoc(Piece.this.getYLoc() - 10);
+//
+//                    break;
+//                case P:
+//
+//                    break;
+//                case SPACE:
+//
+//                    break;
+//
+//            }
+//            e.consume();
+//        }
+//    }
 
 }
