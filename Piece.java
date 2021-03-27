@@ -11,10 +11,12 @@ import javafx.event.EventHandler;
 public class Piece {
     private TetrisSquare[] _squares;
     private int[][] _coords;
+    private Color color;
+    private TetrisSquare[][] _tetrisArray;
 
 
     public Piece(int[][] initialCoords) {
-        Color color = this.ColorGenerator();
+        color = this.ColorGenerator();
         _squares = new TetrisSquare[4];
         _coords = initialCoords;
 
@@ -25,7 +27,7 @@ public class Piece {
 
     public void generatePiece() {
         for (int i = 0; i < 4; i++) {
-            _squares[i] = new TetrisSquare(this.ColorGenerator());
+            _squares[i] = new TetrisSquare(color);
 
         }
 
@@ -48,7 +50,7 @@ public class Piece {
         _squares[i].getRect().setX(x);
     }
 
-    public double getXLoc(double x, int i) {
+    public double getXLoc(int i) {
         return _squares[i].getRect().getX();
     }
 
@@ -56,8 +58,47 @@ public class Piece {
         _squares[i].getRect().setY(y);
     }
 
-    public double getYLoc(double y, int i) {
+    public double getYLoc(int i) {
         return _squares[i].getRect().getY();
+    }
+
+    public boolean checkMoveValidity() {
+        for (int row=0; row< Constants.ROW_SQUARES; row++) {
+            for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
+                TetrisSquare square = null;
+                if (square.getRect() != TetrisSquare(Color.BLACK)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void movePiece(double x, double y, int i) {
+        if (this.checkMoveValidity() == true) {
+            _squares[i].getRect().setX(x);
+            _squares[i].getRect().setY(y);
+        }
+    }
+
+    public void rotatePiece(int x, int y, int i) {
+        int centerOfRotationX = 0;
+        int centerOfRotationY = 0;
+        int oldXLocation = x;
+        int oldYLocation = y;
+        int newXLoc = centerOfRotationX - centerOfRotationY + oldYLocation;
+        int newYLoc = centerOfRotationY + centerOfRotationX - oldXLocation;
+
+        _squares[i].getRect().setX(x);
+        _squares[i].getRect().setY(y);
+
+
+        if (this.checkMoveValidity() == true) {
+            _squares[i].getRect().setX(newXLoc);
+            _squares[i].getRect().setY(newYLoc);
+        }
+
+
     }
 
 
@@ -65,32 +106,5 @@ public class Piece {
         return Color.color(Math.random(), Math.random(), Math.random());
     }
 
-//    private class KeyHandler implements EventHandler<KeyEvent> {
-//        @Override
-//        public void handle(KeyEvent e) {
-//            KeyCode keyPressed = e.getCode();
-//
-//            switch (keyPressed) {
-//                case LEFT:
-//                    Piece.this.setXLoc(Piece.this.getXLoc() - 10);
-//                    break;
-//                case RIGHT:
-//                    Piece.this.setXLoc(Piece.this.getXLoc() + 10);
-//                    break;
-//                case DOWN:
-//                    Piece.this.setYLoc(Piece.this.getYLoc() - 10);
-//
-//                    break;
-//                case P:
-//
-//                    break;
-//                case SPACE:
-//
-//                    break;
-//
-//            }
-//            e.consume();
-//        }
-//    }
 
 }
