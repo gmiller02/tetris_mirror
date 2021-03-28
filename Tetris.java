@@ -23,10 +23,10 @@ public class Tetris {
             for (int col=0; col < Constants.COLUMN_SQUARES; col++) {
                 TetrisSquare square = null;
 
-                square = new TetrisSquare(Color.BLACK);
-                square.getRect().setFill(Color.BLACK);
+                if (_tetrisArray[row][col] != null) {
+                    square.setLocation(col*Constants.SQUARE_WIDTH, row*Constants.SQUARE_WIDTH);
+                }
 
-                square.setLocation(col*Constants.SQUARE_WIDTH, row*Constants.SQUARE_WIDTH);
                 _tetrisArray[row][col] = square;
 
             }
@@ -45,16 +45,20 @@ public class Tetris {
         for (int row=0; row< Constants.ROW_SQUARES; row++) {
             for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
                 TetrisSquare square = _tetrisArray[row][col];
+
                 if (row == 0 || col == 0) {
-                    square.getRect().setFill(Color.BLUE);
+                    square = new TetrisSquare(Color.BLUE);
+                    //square.getRect().setFill(Color.BLUE);
                 }
 
                 if (row == 29) {
-                    square.getRect().setFill(Color.BLUE);
+                    square = new TetrisSquare(Color.BLUE);
+                    //square.getRect().setFill(Color.BLUE);
                 }
 
                 if (col == 19) {
-                    square.getRect().setFill(Color.BLUE);
+                    square = new TetrisSquare(Color.BLUE);
+                    //square.getRect().setFill(Color.BLUE);
                 }
 
             }
@@ -98,9 +102,7 @@ public class Tetris {
 
         for (int row = 0; row < Constants.ROW_SQUARES; row++) {
             for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
-                System.out.println(_boardPane);
-                System.out.println(_tetrisArray);
-                _boardPane.getChildren().add(_tetrisArray[row][col].getRect());
+                    _boardPane.getChildren().add(_tetrisArray[row][col].getRect());
             }
         }
     }
@@ -113,17 +115,17 @@ public class Tetris {
             switch (keyPressed) {
                 case LEFT:
                     for (int i=0; i < 4; i++) {
-                        _piece.movePiece(_piece.getXLoc(i) - 10, i);
+                        _piece.movePiece(_piece.getXLoc(i) - 10, i, i);
                     }
                     break;
                 case RIGHT:
                     for (int i=0; i < 4; i++) {
-                        _piece.movePiece(_piece.getXLoc(i) + 10, i);
+                        _piece.movePiece(_piece.getXLoc(i) + 10, i, i);
                     }
                     break;
                 case DOWN:
                     for (int i=0; i < 4; i++) {
-                        _piece.movePiece(_piece.getYLoc(i) - 10, i);
+                        _piece.movePiece(i,_piece.getYLoc(i) - 10, i);
                     }
                     break;
                 case UP:

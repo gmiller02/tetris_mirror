@@ -13,6 +13,9 @@ public class Piece {
     private int[][] _coords;
     private Color color;
     private TetrisSquare[][] _tetrisArray;
+    int x;
+    int y;
+    int i;
 
 
     public Piece(int[][] initialCoords) {
@@ -65,8 +68,8 @@ public class Piece {
     public boolean checkMoveValidity() {
         for (int row=0; row< Constants.ROW_SQUARES; row++) {
             for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
-                TetrisSquare square = null;
-                if (square.getRect() != TetrisSquare(Color.BLACK)) {
+                TetrisSquare square = _tetrisArray[row][col];
+                if (square.getRect() == null) {
                     return false;
                 }
             }
@@ -75,13 +78,13 @@ public class Piece {
     }
 
     public void movePiece(double x, double y, int i) {
-        if (this.checkMoveValidity() == true) {
+        while (this.checkMoveValidity() == true) {
             _squares[i].getRect().setX(x);
             _squares[i].getRect().setY(y);
         }
     }
 
-    public void rotatePiece(int x, int y, int i) {
+    public void rotatePiece() {
         int centerOfRotationX = 0;
         int centerOfRotationY = 0;
         int oldXLocation = x;
@@ -97,7 +100,6 @@ public class Piece {
             _squares[i].getRect().setX(newXLoc);
             _squares[i].getRect().setY(newYLoc);
         }
-
 
     }
 
