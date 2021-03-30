@@ -33,20 +33,18 @@ public class Tetris {
         }
         _boardPane.addEventHandler(KeyEvent.KEY_PRESSED, new Tetris.KeyHandler());
         _boardPane.setFocusTraversable(true);
-        this.newPiece();
         this.setUpTimeline();
     }
 
     public void makeBorder() {
         for (int row=0; row< Constants.ROW_SQUARES; row++) {
             for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
-                TetrisSquare square = _tetrisArray[row][col];
-                _tetrisArray[row][col] = square;
 
                 if (row == 0 || col == 0 || row == 29 || col == 19){
-                    square = new TetrisSquare(Color.BLUE);
+                    TetrisSquare square = new TetrisSquare(Color.BLUE);
                     square.setLocation(col*Constants.SQUARE_WIDTH, row*Constants.SQUARE_WIDTH);
                     _boardPane.getChildren().add(square.getRect());
+                    _tetrisArray[row][col] = square;
                 }
 
             }
@@ -112,19 +110,12 @@ public class Tetris {
                             _piece.setXLoc( - Constants.SQUARE_WIDTH);
                             System.out.println("moveValidity works");
                     }
-                    System.out.println("KeyHandler works");
 
                     break;
                 case RIGHT:
                         if (_piece.checkMoveValidity(1, 0) == true) {
-                            _piece.setXLoc(_piece.getXLoc() + Constants.SQUARE_WIDTH);
+                            _piece.setXLoc( + Constants.SQUARE_WIDTH);
                         }
-                    break;
-                case DOWN:
-                        if (_piece.checkMoveValidity(1,0) == true) {
-                            _piece.setYLoc(_piece.getYLoc() + Constants.SQUARE_WIDTH);
-                        }
-
                     break;
                 case UP:
                     _piece.rotatePiece();
@@ -132,6 +123,9 @@ public class Tetris {
 
                     break;
                 case SPACE:
+                    while (_piece.checkMoveValidity(1,0) == true) {
+                        _piece.setYLoc( + Constants.SQUARE_WIDTH);
+                    }
 
                     break;
 

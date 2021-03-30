@@ -55,7 +55,7 @@ public class Piece {
         System.out.println("hi");
         for (int i = 0; i < 4; i++) {
             _squares[i].setXLoc(_squares[i].getXLoc() + x);
-            System.out.println(_squares[i].getXLoc());
+            //System.out.println(_squares[i].getXLoc());
         }
     }
 
@@ -81,12 +81,15 @@ public class Piece {
             int row =  (int) (newY / Constants.SQUARE_WIDTH);
             int col = (int) (newX / Constants.SQUARE_WIDTH);
 
-            if (row >= Constants.ROW_SQUARES || col >= Constants.COLUMN_SQUARES) {
-                return false;
-            }
-            else if (row < 0 || col < 0) {
-                return false;
-            }
+            System.out.println("row" + row);
+            System.out.println("col" + col);
+
+//            if (row >= Constants.ROW_SQUARES || col >= Constants.COLUMN_SQUARES) {
+//                return false;
+//            }
+//            else if (row < 0 || col < 0) {
+//                return false;
+//            }
 
             if (_board[row][col] != null) {
                 return false;
