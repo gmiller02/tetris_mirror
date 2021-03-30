@@ -12,16 +12,18 @@ public class Piece {
     private TetrisSquare[] _squares;
     private int[][] _coords;
     private Color color;
-    private TetrisSquare[][] _tetrisArray;
+    private TetrisSquare[][] _board;
     int x;
     int y;
     int i;
 
 
-    public Piece(int[][] initialCoords) {
+    public Piece(int[][] initialCoords, TetrisSquare[][] board) {
         color = this.ColorGenerator();
         _squares = new TetrisSquare[4];
         _coords = initialCoords;
+        _board = board;
+
 
 
         this.generatePiece();
@@ -49,40 +51,51 @@ public class Piece {
     }
 
 
-    public void setXLoc(double x, int i) {
-        _squares[i].getRect().setX(x);
+    public void setXLoc(double x) {
+        System.out.println("hi");
+        for (int i = 0; i < 4; i++) {
+            _squares[i].setXLoc(_squares[i].getXLoc() + x);
+            System.out.println(_squares[i].getXLoc());
+        }
     }
 
-    public double getXLoc(int i) {
-        return _squares[i].getRect().getX();
+    public double getXLoc() {
+        return _squares[0].getRect().getX();
     }
 
-    public void setYLoc(double y, int i) {
-        _squares[i].getRect().setY(y);
+    public void setYLoc(double x) {
+        for (int i = 0; i < 4; i++) {
+            _squares[i].setYLoc(_squares[i].getYLoc() + y);
+        }
     }
 
-    public double getYLoc(int i) {
-        return _squares[i].getRect().getY();
+    public double getYLoc() {
+        return _squares[0].getRect().getY();
     }
 
-    public boolean checkMoveValidity() {
-        for (int row=0; row< Constants.ROW_SQUARES; row++) {
-            for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
-                TetrisSquare square = _tetrisArray[row][col];
-                if (square.getRect() == null) {
-                    return false;
-                }
+    public boolean checkMoveValidity(int dx, int dy) {
+
+        for (int i =0; i < _squares.length; i++) {
+            double newX = _squares[i].getXLoc() + dx * Constants.SQUARE_WIDTH;
+            double newY = _squares[i].getYLoc() + dy * Constants.SQUARE_WIDTH;
+            int row =  (int) (newY / Constants.SQUARE_WIDTH);
+            int col = (int) (newX / Constants.SQUARE_WIDTH);
+
+            if (row >= Constants.ROW_SQUARES || col >= Constants.COLUMN_SQUARES) {
+                return false;
             }
+            else if (row < 0 || col < 0) {
+                return false;
+            }
+
+            if (_board[row][col] != null) {
+                return false;
+            }
+
         }
         return true;
     }
 
-    public void movePiece(double x, double y, int i) {
-        while (this.checkMoveValidity() == true) {
-            _squares[i].getRect().setX(x);
-            _squares[i].getRect().setY(y);
-        }
-    }
 
     public void rotatePiece() {
         int centerOfRotationX = 0;
@@ -96,12 +109,24 @@ public class Piece {
         _squares[i].getRect().setY(y);
 
 
-        if (this.checkMoveValidity() == true) {
+        if (this.checkMoveValidity(0, 0) == true) {
             _squares[i].getRect().setX(newXLoc);
             _squares[i].getRect().setY(newYLoc);
         }
 
     }
+
+//    public void fall() {
+//        double y;
+//        for (int row = 0; row < Constants.ROW_SQUARES; row++) {
+//            for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
+//                if (this.checkMoveValidity() == true) {
+//                    //_squares[i].getYLoc(y).setYLoc() -
+//                }
+//
+//            }
+//        }
+//    }
 
 
     public Color ColorGenerator(){

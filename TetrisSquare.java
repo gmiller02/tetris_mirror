@@ -22,7 +22,7 @@ public class TetrisSquare {
         _square.setX(x);
     }
 
-    public double getXLoc(double x) {
+    public double getXLoc() {
         return _square.getX();
     }
 
@@ -30,7 +30,7 @@ public class TetrisSquare {
         _square.setY(y);
     }
 
-    public double getYLoc(double y) {
+    public double getYLoc() {
         return _square.getY();
     }
 
