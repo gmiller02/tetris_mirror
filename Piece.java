@@ -52,10 +52,9 @@ public class Piece {
 
 
     public void setXLoc(double x) {
-        System.out.println("hi");
+
         for (int i = 0; i < 4; i++) {
             _squares[i].setXLoc(_squares[i].getXLoc() + x);
-            //System.out.println(_squares[i].getXLoc());
         }
     }
 
@@ -63,7 +62,7 @@ public class Piece {
         return _squares[0].getRect().getX();
     }
 
-    public void setYLoc(double x) {
+    public void setYLoc(double y) {
         for (int i = 0; i < 4; i++) {
             _squares[i].setYLoc(_squares[i].getYLoc() + y);
         }
@@ -81,15 +80,6 @@ public class Piece {
             int row =  (int) (newY / Constants.SQUARE_WIDTH);
             int col = (int) (newX / Constants.SQUARE_WIDTH);
 
-            System.out.println("row" + row);
-            System.out.println("col" + col);
-
-//            if (row >= Constants.ROW_SQUARES || col >= Constants.COLUMN_SQUARES) {
-//                return false;
-//            }
-//            else if (row < 0 || col < 0) {
-//                return false;
-//            }
 
             if (_board[row][col] != null) {
                 return false;
@@ -101,35 +91,55 @@ public class Piece {
 
 
     public void rotatePiece() {
-        int centerOfRotationX = 0;
-        int centerOfRotationY = 0;
-        int oldXLocation = x;
-        int oldYLocation = y;
-        int newXLoc = centerOfRotationX - centerOfRotationY + oldYLocation;
-        int newYLoc = centerOfRotationY + centerOfRotationX - oldXLocation;
-
-        _squares[i].getRect().setX(x);
-        _squares[i].getRect().setY(y);
+        double centerOfRotationX = _squares[0].getXLoc();
+        double centerOfRotationY = _squares[0].getYLoc();
 
 
-        if (this.checkMoveValidity(0, 0) == true) {
-            _squares[i].getRect().setX(newXLoc);
-            _squares[i].getRect().setY(newYLoc);
+        for (int i =0; i < _squares.length; i++) {
+            double oldXLocation = _squares[i].getXLoc();;
+            double oldYLocation = _squares[i].getYLoc();;
+            double newXLoc = centerOfRotationX - centerOfRotationY + oldYLocation;
+            double newYLoc = centerOfRotationY + centerOfRotationX - oldXLocation;
+            _squares[i].setXLoc(newXLoc);
+            _squares[i].setYLoc(newYLoc);
+            int row =  (int) (newYLoc / Constants.SQUARE_WIDTH);
+            int col = (int) (newXLoc / Constants.SQUARE_WIDTH);
+
         }
+
 
     }
 
-//    public void fall() {
-//        double y;
-//        for (int row = 0; row < Constants.ROW_SQUARES; row++) {
-//            for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
-//                if (this.checkMoveValidity() == true) {
-//                    //_squares[i].getYLoc(y).setYLoc() -
-//                }
-//
-//            }
-//        }
-//    }
+    public boolean checkRotateValidity() {
+        double centerOfRotationX = _squares[0].getXLoc();
+        double centerOfRotationY = _squares[0].getYLoc();
+
+
+        for (int i =0; i < _squares.length; i++) {
+            double oldXLocation = _squares[i].getXLoc();;
+            double oldYLocation = _squares[i].getYLoc();;
+            double newXLoc = centerOfRotationX - centerOfRotationY + oldYLocation;
+            double newYLoc = centerOfRotationY + centerOfRotationX - oldXLocation;
+
+            int row =  (int) (newYLoc / Constants.SQUARE_WIDTH);
+            int col = (int) (newXLoc / Constants.SQUARE_WIDTH);
+
+            if (_board[row][col] != null) {
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    public void addToBoard() {
+                for (int i = 0; i < 4; i++) {
+                    int row = (int) _squares[i].getYLoc()/Constants.SQUARE_WIDTH;
+                    int col = (int) _squares[i].getXLoc()/Constants.SQUARE_WIDTH;
+                    _board[row][col] = _squares[i];
+                }
+    }
+
 
 
     public Color ColorGenerator(){

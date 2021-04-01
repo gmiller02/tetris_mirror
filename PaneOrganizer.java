@@ -20,7 +20,6 @@ public class PaneOrganizer {
 
 
 
-
     public BorderPane getRoot() {
         return _root;
     }

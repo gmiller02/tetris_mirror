@@ -6,6 +6,9 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -20,6 +23,7 @@ public class Tetris {
     private Pane _boardPane;
     private Piece _piece;
     private Timeline _timeline;
+    private Label _label;
 
 
     public Tetris(Pane boardPane) {
@@ -28,12 +32,22 @@ public class Tetris {
         this.newPiece();
 
         this.makeBorder();
-        for (int i = 0; i < 4; i++) {
-            _boardPane.getChildren().add(_piece.getComponents()[i].getRect());
-        }
+
         _boardPane.addEventHandler(KeyEvent.KEY_PRESSED, new Tetris.KeyHandler());
         _boardPane.setFocusTraversable(true);
         this.setUpTimeline();
+
+        Button quit = new Button();
+        quit.setText("Quit");
+        quit.setOnAction(new Tetris.ClickHandler());
+        _boardPane.getChildren().add(quit);
+
+        _label = new Label();
+        _label.setText("Game Over");
+        _boardPane.getChildren().add(_label);
+        _label.setLayoutX(150);
+        _label.setLayoutY(300);
+        _label.setVisible(false);
     }
 
     public void makeBorder() {
@@ -55,37 +69,73 @@ public class Tetris {
         return _tetrisArray;
     }
 
-    public Piece newPiece() {
+    public void newPiece() {
         int rand_int = (int) (Math.random() * 6);
         switch (rand_int) {
             case 0:
                 _piece = new Piece(Constants.I_PIECE_COORDS, _tetrisArray);
-                return _piece;
+                break;
             case 1:
                 _piece = new Piece(Constants.T_PIECE_COORDS, _tetrisArray);
-                return _piece;
+                break;
             case 2:
                 _piece = new Piece(Constants.O_PIECE_COORDS, _tetrisArray);
-                return _piece;
+                break;
             case 3:
                 _piece = new Piece(Constants.J_PIECE_COORDS, _tetrisArray);
-                return _piece;
+                break;
             case 4:
                 _piece = new Piece(Constants.L_PIECE_COORDS, _tetrisArray);
-                return _piece;
+                break;
             case 5:
                 _piece = new Piece(Constants.N_PIECE_COORDS, _tetrisArray);
-                return _piece;
+                break;
             default:
                 _piece = new Piece(Constants.M_PIECE_COORDS, _tetrisArray);
-                return _piece;
+                break;
 
+        }
+        for (int i = 0; i < 4; i++) {
+            _boardPane.getChildren().add(_piece.getComponents()[i].getRect());
         }
 
     }
 
+    public boolean checkIfRowIsFull(int row) {
+        for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
+            if (_tetrisArray[row][col] == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void clearRows() {
+            for (int row=0; row<= 1 && row >= 28; row ++) {
+                if (checkIfRowIsFull(row) == true) {
+                    for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
+                        _boardPane.getChildren().remove(_tetrisArray[row][col].getRect());
+                    }
+                }
+
+            for (row = 0; row >= 28 && row<= 1; row ++) {
+                for (int col = 0; col < Constants.COLUMN_SQUARES; col++) {
+                    _tetrisArray[row][col] = _tetrisArray[row - 1][col];
+                }
+            }
+        }
+    }
+
+    public void gameOver() {
+        for (int row = 0; row == 1; row ++) {
+//            if (piece is in board) {
+//                _label.setVisible(true);
+//            }
+        }
+    }
+
     public void setUpTimeline() {
-        KeyFrame kf = new KeyFrame(Duration.seconds(10), new Tetris.TimeHandler());
+        KeyFrame kf = new KeyFrame(Duration.seconds(1), new Tetris.TimeHandler());
         _timeline = new Timeline(kf);
         _timeline.setCycleCount(Animation.INDEFINITE);
         _timeline.play();
@@ -94,7 +144,11 @@ public class Tetris {
     private class TimeHandler implements EventHandler<ActionEvent> {
 
         public void handle(ActionEvent event) {
-
+            if (_piece.checkMoveValidity(0,1) == false) {
+                _piece.addToBoard();
+                Tetris.this.newPiece();
+            }
+            Tetris.this.clearRows();
         }
     }
 
@@ -108,9 +162,7 @@ public class Tetris {
                 case LEFT:
                     if (_piece.checkMoveValidity(-1, 0) == true) {
                             _piece.setXLoc( - Constants.SQUARE_WIDTH);
-                            System.out.println("moveValidity works");
                     }
-
                     break;
                 case RIGHT:
                         if (_piece.checkMoveValidity(1, 0) == true) {
@@ -118,15 +170,17 @@ public class Tetris {
                         }
                     break;
                 case UP:
-                    _piece.rotatePiece();
-                case P:
-
+                    if (_piece.checkRotateValidity() == true) {
+                        _piece.rotatePiece();
+                    }
                     break;
                 case SPACE:
-                    while (_piece.checkMoveValidity(1,0) == true) {
+                    while (_piece.checkMoveValidity(0,1) == true) {
                         _piece.setYLoc( + Constants.SQUARE_WIDTH);
                     }
-
+                    if (_piece.checkMoveValidity(0,1) == false) {
+                        _piece.addToBoard();
+                    }
                     break;
 
             }
@@ -134,5 +188,10 @@ public class Tetris {
         }
     }
 
+    private class ClickHandler implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent Event) {
+            System.exit(0);
+        }
+    }
 
 }
