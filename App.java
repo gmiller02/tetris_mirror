@@ -10,7 +10,7 @@ import javafx.scene.Scene;
  * The main method of this application calls the start method. You
  * will need to fill in the start method to instantiate your game.
  *
- * Class comments here...
+ * This class instantiates my PaneOrganizer.
  *
  */
 
