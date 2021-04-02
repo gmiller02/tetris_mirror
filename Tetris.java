@@ -283,6 +283,13 @@ public class Tetris {
                             }
                         }
                         break;
+
+                    case DOWN:
+                        if (_piece.checkMoveValidity(0,1) == true) {
+                            _piece.setYLoc( + Constants.SQUARE_WIDTH);
+                        }
+                        break;
+
                     case SPACE:
                         while (_piece.checkMoveValidity(0,1) == true) {
                             _piece.setYLoc( + Constants.SQUARE_WIDTH);
