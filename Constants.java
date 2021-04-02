@@ -7,8 +7,8 @@ public class Constants {
 
     public static final int ROW_SQUARES = 30;
     public static final int COLUMN_SQUARES = 20;
-    public static final int MIN_ROW = 1;
-    public static final int MAX_ROW = 28;
+    public static final int PIECE_X_OFFSET = 200;
+    public static final int PIECE_Y_OFFSET = 60;
 
     // width of each square
     public static final int SQUARE_WIDTH = 20;
