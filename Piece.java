@@ -1,11 +1,12 @@
 package tetris;
 
-import javafx.application.Platform;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.KeyCode;
-import javafx.event.EventHandler;
+
+
+/**
+ * This class contains an Array which is made up of TetrisSquares, a 2-D array that contains the coordinates of various
+ * pieces, an instance variable called
+ */
 
 
 public class Piece {
@@ -26,6 +27,7 @@ public class Piece {
 
 
 
+
         this.generatePiece();
 
     }
@@ -41,8 +43,8 @@ public class Piece {
 
     public void arrangePieces() {
         for (int i = 0; i < 4; i++) {
-            _squares[i].setXLoc(_coords[i][0] + 100);
-            _squares[i].setYLoc(_coords[i][1] + 100);
+            _squares[i].setXLoc(_coords[i][0] + 200);
+            _squares[i].setYLoc(_coords[i][1] + 60);
         }
     }
 

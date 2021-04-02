@@ -3,6 +3,11 @@ package tetris;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
+/**
+ * This class instantiates my Tetris class, which is my game class. It also instantiates my game pane and the array that
+ * I am adding to the board.
+ */
+
 public class PaneOrganizer {
     private BorderPane _root;
     private Tetris _board;
@@ -18,7 +23,9 @@ public class PaneOrganizer {
 
     }
 
-
+    /**
+     * This method returns _root so that root can be accessed in other classes.
+     */
 
     public BorderPane getRoot() {
         return _root;

@@ -1,0 +1,21 @@
+tetris README
+
+Handin: This is my final handin
+
+My Tetris has the following classes: App, PaneOrganizer, Piece, Constants, Tetris, and Tetrisquare. They are organized
+in the following ways:
+
+App instantiates my PaneOrganizer class.
+PaneOrganizer creates an instance of my Tetris class, which is my game class.
+Tetris contains an instance variable of my Piece class and the EventHandlers that are responsible for running the game.
+It also contains an array made up of TetrisSquares that makes up my board.
+Piece contains two arrays made up of my class TetrisSquare- one that is an instance of the board, and one that makes up
+my pieces.
+TetrisSquare does not contain any classes.
+
+Design Choices:
+For the most part, I don't think I used any code that varied widely from the assigned psuedocode.
+
+Known Bugs: I have no known bugs.
+
+Hours: This project took around 30 hours to complete.
