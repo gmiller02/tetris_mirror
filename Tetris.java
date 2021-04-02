@@ -13,11 +13,12 @@ import javafx.scene.input.KeyCode;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
+
 /**
  * This is my game class, which is called Tetris. It contains the following instance variables: a 2-D array of TetrisSquares
  * called _tetrisArray, the pane that includes my various game elements, an instance of my piece class, a label, and a
  * boolean that I use to see if the game is paused or not. It also instantiates a local variable called 'quit' which
- * is my quit button.
+ * is my quit button. I also have an integer called type, which I use to assign each piece shape a number.
  */
 
 public class Tetris {
@@ -27,6 +28,7 @@ public class Tetris {
     private Timeline _timeline;
     private Label _label;
     boolean isPaused = false;
+    private int type;
 
 
     public Tetris(Pane boardPane) {
@@ -96,31 +98,37 @@ public class Tetris {
         switch (rand_int) {
             case 0:
                 _piece = new Piece(Constants.I_PIECE_COORDS, _tetrisArray);
+                type = 1;
                 break;
             case 1:
                 _piece = new Piece(Constants.T_PIECE_COORDS, _tetrisArray);
+                type = 2;
                 break;
             case 2:
                 _piece = new Piece(Constants.O_PIECE_COORDS, _tetrisArray);
+                type = 3;
                 break;
             case 3:
                 _piece = new Piece(Constants.J_PIECE_COORDS, _tetrisArray);
+                type = 4;
                 break;
             case 4:
                 _piece = new Piece(Constants.L_PIECE_COORDS, _tetrisArray);
+                type = 5;
                 break;
             case 5:
                 _piece = new Piece(Constants.N_PIECE_COORDS, _tetrisArray);
+                type = 6;
                 break;
             default:
                 _piece = new Piece(Constants.M_PIECE_COORDS, _tetrisArray);
+                type = 6;
                 break;
 
         }
         for (int i = 0; i < 4; i++) {
             _boardPane.getChildren().add(_piece.getComponents()[i].getRect());
         }
-
     }
 
     /**
@@ -130,9 +138,12 @@ public class Tetris {
 
     public void pausedGame() {
         if (isPaused) {
-            _label.setVisible(true);
+            _label.setVisible(false);
+            _timeline.play();
+        }
+        else {
             _timeline.pause();
-            _boardPane.setOnKeyPressed(null);
+            _label.setVisible(true);
         }
     }
 
@@ -191,17 +202,17 @@ public class Tetris {
      */
 
     public void gameOver() {
-        for (int row = 0; row == 4; row++) {
-            if (checkIfRowIsFull(row) == true) {
-                Label label = new Label();
-                label.setText("Game Over");
-                _boardPane.getChildren().add(label);
-                label.setLayoutX(150);
-                label.setLayoutY(300);
-                _timeline.pause();
-                _boardPane.setOnKeyPressed(null);
+            for (int col = 1; col < Constants.COLUMN_SQUARES - 1; col++) {
+                if (_tetrisArray[1][col] != null) {
+                    Label label = new Label();
+                    label.setText("Game Over");
+                    _boardPane.getChildren().add(label);
+                    label.setLayoutX(150);
+                    label.setLayoutY(300);
+                    _timeline.pause();
+                    _boardPane.setOnKeyPressed(null);
+                }
             }
-        }
     }
 
     /**
@@ -236,7 +247,6 @@ public class Tetris {
                 _piece.setYLoc( + Constants.SQUARE_WIDTH);
             }
             Tetris.this.gameOver();
-            Tetris.this.pausedGame();
         }
     }
 
@@ -253,35 +263,43 @@ public class Tetris {
         public void handle(KeyEvent e) {
             KeyCode keyPressed = e.getCode();
 
-            switch (keyPressed) {
-                case LEFT:
-                    if (_piece.checkMoveValidity(-1, 0) == true) {
+            if (isPaused != true) {
+                switch (keyPressed) {
+                    case LEFT:
+                        if (_piece.checkMoveValidity(-1, 0) == true) {
                             _piece.setXLoc( - Constants.SQUARE_WIDTH);
-                    }
-                    break;
-                case RIGHT:
-                        if (_piece.checkMoveValidity(1, 0) == true) {
-                            _piece.setXLoc( + Constants.SQUARE_WIDTH);
                         }
-                    break;
-                case UP:
-                    if (_piece.checkRotateValidity() == true) {
-                        _piece.rotatePiece();
-                    }
-                    break;
-                case SPACE:
-                    while (_piece.checkMoveValidity(0,1) == true) {
-                        _piece.setYLoc( + Constants.SQUARE_WIDTH);
-                    }
-                    if (_piece.checkMoveValidity(0,1) == false) {
-                        _piece.addToBoard();
-                    }
-                    break;
-                case P:
-                    isPaused =!isPaused;
-                    break;
+                        break;
+                    case RIGHT:
+                            if (_piece.checkMoveValidity(1, 0) == true) {
+                                _piece.setXLoc( + Constants.SQUARE_WIDTH);
+                            }
+                        break;
+                    case UP:
+                        if (_piece.checkRotateValidity() == true) {
+                            if (type != 3) {
+                                _piece.rotatePiece();
+                                // if a piece is anything but a square, it can be rotated
+                            }
+                        }
+                        break;
+                    case SPACE:
+                        while (_piece.checkMoveValidity(0,1) == true) {
+                            _piece.setYLoc( + Constants.SQUARE_WIDTH);
+                        }
+                        if (_piece.checkMoveValidity(0,1) == false) {
+                            _piece.addToBoard();
+                        }
+                        break;
+
+                }
 
 
+
+            }
+            if (keyPressed == KeyCode.P) {
+                Tetris.this.pausedGame();
+                isPaused =!isPaused;
             }
             e.consume();
         }
